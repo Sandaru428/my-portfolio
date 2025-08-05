@@ -45,13 +45,21 @@ export function ExpandableCardDemo() {
       <AnimatePresence>
         {active && typeof active === "object" ? (
           <div className="fixed inset-0 grid place-items-center z-[100]">
+            {/* Overlay with blur */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-10"
+            />
+            {/* Expanded Card */}
             <motion.button
               key={`button-${active.title}-${id}`}
               layout
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, transition: { duration: 0.05 } }}
-              className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6"
+              className="flex absolute top-2 right-2 lg:hidden items-center justify-center bg-white rounded-full h-6 w-6 z-20"
               onClick={() => setActive(null)}
             >
               <CloseIcon />
@@ -59,7 +67,7 @@ export function ExpandableCardDemo() {
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="w-full max-w-[500px] h-[90%] md:h-fit md:max-h-[90%] flex flex-col bg-white dark:bg-slate-900 sm:rounded-3xl overflow-hidden z-[9999]"
+              className="w-full max-w-[80vw] h-fit md:max-w-[500px] md:h-fit rounded-2xl md:rounded-3xl flex flex-col bg-white dark:bg-slate-900 border border-blue-200 dark:border-blue-400 overflow-hidden z-20"
             >
               <div>
                 <div className="flex justify-between items-start p-4">
@@ -116,22 +124,22 @@ export function ExpandableCardDemo() {
             layoutId={`card-${card.title}-${id}`}
             key={card.title}
             onClick={() => setActive(card)}
-            className="relative p-4 flex flex-col items-center justify-center rounded-xl cursor-pointer border border-neutral-200 dark:border-white/[0.2] card-angled-lines transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-blue-400 dark:hover:border-blue-300"
-            style={{ minHeight: 260, height: 260 }}
+            className="relative p-4 md:p-6 flex flex-col items-center justify-center rounded-xl cursor-pointer border border-neutral-200 dark:border-white/[0.2] card-angled-lines transition-all duration-300 hover:shadow-xl hover:scale-105 hover:border-blue-400 dark:hover:border-blue-300"
+            style={{ minHeight: 220, height: 260 }}
           >
             <div className="flex w-full h-full items-center justify-center">
               <motion.h3
                 layoutId={`title-${card.title}-${id}`}
-                className="text-2xl md:text-3xl lg:text-4xl font-extrabold text-neutral-800 dark:text-neutral-100 text-center"
+                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-neutral-800 dark:text-neutral-100 text-center break-words"
               >
                 {card.title}
               </motion.h3>
             </div>
-            <div className="absolute bottom-3 right-4 flex gap-2">
+            <div className="absolute bottom-3 right-4 flex flex-wrap lg:flex-nowrap gap-2 justify-end max-w-[90%] overflow-x-auto scrollbar-thin scrollbar-thumb-blue-200">
               {card.stack.map((tech: string) => (
                 <span
                   key={tech}
-                  className="px-2 py-1 rounded-full border border-blue-200 bg-blue-50 text-blue-700 text-xs font-semibold dark:border-blue-400 dark:bg-blue-900 dark:text-blue-100"
+                  className="px-2 md:px-2 lg:px-1 py-1 rounded-full border border-blue-200 bg-blue-50 text-xs md:text-xs lg:text-[10px] xl:text-[10px] font-semibold dark:border-blue-400 dark:bg-blue-900 dark:text-blue-100 transition-all whitespace-nowrap"
                 >
                   {tech}
                 </span>
